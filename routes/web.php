@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-
+$qc = QuestionController::class;
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->prefix('questions')->name('q.')->group(function () {
+    $qc = QuestionController::class;
+    Route::get('/', [$qc, 'create'])->name('create');
+    Route::post('/', [$qc, 'store'])->name('store');
+    Route::get('/{id}/edit', [$qc, 'edit'])->name('edit');
+    Route::put('/{id}', [$qc, 'update'])->name('update');
+    Route::delete('/{id}', [$qc, 'destroy'])->name('destroy');
+    Route::post('answer', [$qc, 'answer'])->name('answer');
+    Route::post('/{id}/answer', [$qc, 'answerId'])->name('answer.id');
+});
+Route::get('questions/{id}', [$qc, 'show'])->name('q.show');
