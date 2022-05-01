@@ -26,4 +26,16 @@ class Question extends Model
         // return DB::select("select * from questions where question_id=$this->id");
         return DB::select("select * from questions where question_id = ?", [$this->id]);
     }
+
+    // protected $table = "questions";
+
+    public function comments()
+    {
+        return $this->hasMany(
+            Comment::class,
+            // Reaction::class
+        ); 
+    }
+
+    
 }

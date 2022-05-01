@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +30,9 @@ Route::middleware('auth')->prefix('questions')->name('q.')->group(function () {
     Route::post('/{id}/answer', [$qc, 'answerId'])->name('answer.id');
 });
 Route::get('questions/{id}', [$qc, 'show'])->name('q.show');
+
+Route::get('comments/{question_id}', [CommentController::class, 'create'])->name('comments.create');
+Route::post('comments/{question_id}', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('reaction/{id}', [ReactionController::class, 'create'])->name('reaction.create');
+Route::post('reaction/{id}',[ReactionController::class, 'store'])->name('reaction.store');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reaction;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReactionController extends Controller
 {
@@ -22,9 +24,13 @@ class ReactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
+        $question = Question::find($id);
+
+
+        return view('reactions.create')->with('question', $question);
     }
 
     /**
@@ -33,9 +39,17 @@ class ReactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         //
+    
+        $reaction = new Reaction;
+        $reaction->name = $request->input('name');
+        $reaction->save();
+
+        return redirect()->route('q.show',$id);
+
+
     }
 
     /**

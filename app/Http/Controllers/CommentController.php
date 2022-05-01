@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -15,6 +17,7 @@ class CommentController extends Controller
     public function index()
     {
         //
+        
     }
 
     /**
@@ -22,20 +25,34 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($question_id)
     {
         //
+        $question = Question::find($question_id);
+        // dd($question_id);
+        return view('comments.create')->with('question', $question);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request, $id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request  $request, $question_id)
     {
         //
+        
+        $comment = new Comment;
+        $comment->text = $request->input('text');
+        $comment->user_id = Auth::id();
+        $comment->question_id = $question_id;
+        $comment->save();
+        
+
+        return redirect()->route('q.show', $question_id);
+
+
     }
 
     /**
